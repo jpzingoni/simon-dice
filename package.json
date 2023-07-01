@@ -1,0 +1,22 @@
+{
+  "name": "simon_dice",
+  "version": "1.0.0",
+  "description": "este es un juego simon dice",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpzingoni/simon-dice.git"
+  },
+  "keywords": [
+    "hola"
+  ],
+  "author": "tbw",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jpzingoni/simon-dice/issues"
+  },
+  "homepage": "https://github.com/jpzingoni/simon-dice#readme"
+}

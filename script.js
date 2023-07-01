@@ -1,132 +1,121 @@
-boton = document.querySelector(".start")
-color = document.querySelectorAll(".color")
-texto = document.querySelector("p")
-let colorMostrado = [];
-let coloresClickeados = [];
+$button = document.getElementById('start');
+$turno  = document.getElementById('turno');
+$empezar = document.getElementById('empezar');
+$textoEmpezar = document.getElementById('')
+$colores = document.getElementsByClassName('color');
+$ronda = document.getElementById('ronda');
+contador = 1;
+colorHabilitado = true;
+console.log($colores)
 
-boton.onclick = function(){
-    //colorMostrado.push(cambiaropacidad())
-    resetearJuego()
-    manejarRonda()
-    bloquearJuegoUsuario()
-    //resetearJuego()
-    return colorMostrado
-}
+// secuenciaMaquinaOriginal = [];
+// secuenciaJugador = [];
+let colorSeleccionado = null;
 
-function resetearJuego(){
-    colorMostrado = [];
-    coloresClickeados = [];
-}
-function cambiaropacidad($color){
-    $color.style.opacity = 1;
-    setTimeout(() => {
-        $color.style.opacity = 0.3;
-    }, 800);
-}
 
-function colorAleatorio(){
-    i = color[Math.floor(Math.random() * color.length)];
-    return i;
-}
+$button.addEventListener("click", function(){
+    $ronda.textContent = `Ronda: ${contador}`;
+    secuenciaMaquinaOriginal = [];
+    secuenciaJugador = [];
+    $turno.classList.add("mostrar")
+    $button.classList.add("ocultar");
+    $empezar.classList.add("ocultar")
+    setTimeout(function(){
+        turnoMaquina()}, 1000)
+})
 
-function turnoDelUsuario(){
-    let red = document.getElementById("red")
-    let green = document.getElementById("green")
-    let yellow = document.getElementById("yellow")
-    let blue = document.getElementById("blue")
-    texto.innerHTML = "Turno del usuario"
-    red.onclick = function(){
-        coloresClickeados.push(red)
-        const $cuadroMaquina = colorMostrado[coloresClickeados.length - 1];
-        if(red.id == $cuadroMaquina.id){
-            if (coloresClickeados.length === colorMostrado.length) {
-                setTimeout(manejarRonda, 1000);
-                return cambiaropacidad(red)
-              }
-            return cambiaropacidad(red)
-        }else{
-            perder();
-        }
-    }
-    green.onclick = function(){
-        coloresClickeados.push(green)
-        const $cuadroMaquina = colorMostrado[coloresClickeados.length - 1];
-        if(green.id == $cuadroMaquina.id){
-            if (coloresClickeados.length === colorMostrado.length) {
-                setTimeout(manejarRonda, 1000);
-                return cambiaropacidad(green)
-              }
-            return cambiaropacidad(green)
-        }else{
-            perder();
-        }
-    }
-    yellow.onclick = function(){
-        coloresClickeados.push(yellow)
-        const $cuadroMaquina = colorMostrado[coloresClickeados.length - 1];
-        if(yellow.id == $cuadroMaquina.id){
-            if (coloresClickeados.length === colorMostrado.length) {
-                setTimeout(manejarRonda, 1000);
-                return cambiaropacidad(yellow)
-              }
-            return cambiaropacidad(yellow)
-        }else{
-            perder();
-        }
-    }
-    blue.onclick = function(){
-        coloresClickeados.push(blue)
-        const $cuadroMaquina = colorMostrado[coloresClickeados.length - 1];
-        if(blue.id == $cuadroMaquina.id){
-            if (coloresClickeados.length === colorMostrado.length) {
-                setTimeout(manejarRonda, 1000);
-                return cambiaropacidad(blue)
-              }
-            return cambiaropacidad(blue)
-        }else{
-            perder();
-        }
+turnoMaquina = () =>{
+    $turno.textContent = "Turno de la maquina"
+    anularClicks()
+    sumarRonda()
+    obtenerColorAleatorio()
+    for(let i = 0; i < secuenciaMaquinaOriginal.length; i++){
+        let duracion = 1000;
+        setTimeout(function(){
+            cambiarColorMaquina(secuenciaMaquinaOriginal[i])
+        }, i*duracion)
+        setTimeout(function(){
+            turnoJugador()}, (((secuenciaMaquinaOriginal.length))*duracion))
     }
 }
 
-function bloquearJuegoUsuario(){
-        document.querySelectorAll('.color').forEach(function($cuadro) {
-          $cuadro.onclick = function() {
-          };
-        });
+turnoJugador = () =>{
+    habilitarClicks();
+    cambiarTextos();
+    poderElegirColor();
 }
 
-function desbloquearJuegoUsuario(){
-    activarClicks = document.querySelector("body")
-    activarClicks.onclick = turnoDelUsuario()
-    //boton.onclick = null;
+obtenerColorAleatorio = () =>{
+    let posicionAleatoria = Math.round(Math.random() * ($colores.length -1));
+    let colorAleatorio = $colores[posicionAleatoria];
+    secuenciaMaquinaOriginal.push(colorAleatorio);
+    return colorAleatorio
 }
 
-function manejarRonda() {
-    bloquearJuegoUsuario()
-    let colorNuevo = colorAleatorio()
-    colorMostrado.push(colorNuevo)
+cambiarColorMaquina = (colorAleatorio) =>{
+    colorAleatorio.classList.add("transicion");
+    setTimeout(function(){
+        colorAleatorio.classList.remove("transicion")},
+        600);
+    }
 
-    const RETRASO_TURNO_JUGADOR = (colorMostrado.length + 1) * 1000;
+cambiarColorJugador = (colorAleatorio) =>{
+    colorAleatorio.classList.add("transicion");
+    setTimeout(function(){
+        colorAleatorio.classList.remove("transicion")},
+        350);
+    }
 
-    colorMostrado.forEach(function($cuadro, index) {
-        const RETRASO_MS = (index + 1) * 1000;
-        setTimeout(function() {
-          cambiaropacidad($cuadro);
-        }, RETRASO_MS);
-      });
-    
-      setTimeout(function() {
-        desbloquearJuegoUsuario();
-      }, RETRASO_TURNO_JUGADOR);
-      texto.innerHTML = "Turno de la maquina"
-      coloresClickeados = []
+agregarSecuenciaJugador = () =>{
+    secuenciaJugador.push(colorSeleccionado);
+    let cuadroACompararMaquina = secuenciaMaquinaOriginal[secuenciaJugador.length -1]
+    console.log(cuadroACompararMaquina)
+    if( colorSeleccionado.id != cuadroACompararMaquina.id){
+        $button.classList.remove("ocultar")
+        $turno.classList.remove("mostrar")
+        $empezar.classList.remove("ocultar")
+        contador = 1;
+        $ronda.textContent = "Perdiste, vuelve a comenzar";
+    }
+    else if(secuenciaJugador.length === secuenciaMaquinaOriginal.length){
+        console.log(secuenciaJugador)
+        console.log(secuenciaMaquinaOriginal)
+        secuenciaJugador = []
+        setTimeout(function(){
+        turnoMaquina()}, 1000);
+    }else{
+        console.log("Dale, que venís bien pá");
+        }
+    }
+
+
+poderElegirColor = () =>{
+    Array.from($colores).forEach(i => {
+        i.onclick = function(){
+            cambiarColorJugador(i)
+            colorSeleccionado = i;
+            agregarSecuenciaJugador();
+            console.log(colorSeleccionado)
+        }
+    })
 }
 
-function perder() {
-    bloquearJuegoUsuario();
-    colorMostrado = []
-    alert("Perdiste tocá empezar, para volver a jugar")
-    texto.innerHTML = "Presiona 'Empezar' para jugar"
+anularClicks = () =>{
+    Array.from($colores).forEach(i => {
+        i.classList.add("anularClicks")}
+    )}
+
+habilitarClicks = () =>{
+    Array.from($colores).forEach(i => {
+        i.classList.remove("anularClicks")}
+    )}
+
+cambiarTextos = () =>{
+    $turno.textContent = "Turno jugador"
 }
-//turnoDelUsuario()
+
+sumarRonda = () =>{
+    $ronda.textContent = `Ronda: ${contador}`;
+    contador++;
+    return contador
+}

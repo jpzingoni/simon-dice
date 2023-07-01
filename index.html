@@ -4,25 +4,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Economica" rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
-    <p>Presiona "Empezar" para jugar</p>
-    <button class="start">Empezar</button>
-    <div class="conteiner" id="tablero">
+    <div id="dashboard">
+        <div class="textos">
+            <p class= "contenidoTextos" id="empezar">Clickea el botón para comenzar</p>
+            <p class= "contenidoTextos" id="turno"> Turno de la maquina</p>
+            <button class= "contenidoTextos" id="start">Comenzar juego</button>
+        </div>
+        <div class="conteiner" id="tablero">
 
-        <div class="color" id="red">
-            rojo
+            <div class="color" id="color1" name="red">
+            </div>
+            <div class="color" id="color2" name="yellow">
+            </div>
+            <div class="color" id="color3" name="green">
+            </div>
+            <div class="color" id="color4" name="blue">   
+            </div>
         </div>
-        <div class="color" id="green">
-            verde
-        </div>
-        <div class="color" id="blue">
-            azul
-        </div>
-        <div class="color" id="yellow">
-            amarillo
-        </div>
+        <p class="textos" id="ronda">Ronda: </p>
     </div>
 
     <script src="script.js"></script>
