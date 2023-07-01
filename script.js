@@ -1,22 +1,17 @@
-$button = document.getElementById('start');
-$turno  = document.getElementById('turno');
-$empezar = document.getElementById('empezar');
-$textoEmpezar = document.getElementById('')
-$colores = document.getElementsByClassName('color');
-$ronda = document.getElementById('ronda');
-contador = 1;
-colorHabilitado = true;
-console.log($colores)
-
-// secuenciaMaquinaOriginal = [];
-// secuenciaJugador = [];
+let $button = document.getElementById('start');
+let $turno  = document.getElementById('turno');
+let $empezar = document.getElementById('empezar');
+let $colores = document.getElementsByClassName('color');
+let $ronda = document.getElementById('ronda');
+let contador = 1;
 let colorSeleccionado = null;
-
+let secuenciaMaquinaOriginal = []
+let secuenciaJugador= []
 
 $button.addEventListener("click", function(){
     $ronda.textContent = `Ronda: ${contador}`;
-    secuenciaMaquinaOriginal = [];
-    secuenciaJugador = [];
+    // secuenciaMaquinaOriginal = [];
+    // secuenciaJugador = [];
     $turno.classList.add("mostrar")
     $button.classList.add("ocultar");
     $empezar.classList.add("ocultar")
@@ -69,8 +64,9 @@ cambiarColorJugador = (colorAleatorio) =>{
 agregarSecuenciaJugador = () =>{
     secuenciaJugador.push(colorSeleccionado);
     let cuadroACompararMaquina = secuenciaMaquinaOriginal[secuenciaJugador.length -1]
-    console.log(cuadroACompararMaquina)
     if( colorSeleccionado.id != cuadroACompararMaquina.id){
+        secuenciaJugador = []
+        secuenciaMaquinaOriginal = []
         $button.classList.remove("ocultar")
         $turno.classList.remove("mostrar")
         $empezar.classList.remove("ocultar")
@@ -78,15 +74,11 @@ agregarSecuenciaJugador = () =>{
         $ronda.textContent = "Perdiste, vuelve a comenzar";
     }
     else if(secuenciaJugador.length === secuenciaMaquinaOriginal.length){
-        console.log(secuenciaJugador)
-        console.log(secuenciaMaquinaOriginal)
         secuenciaJugador = []
         setTimeout(function(){
         turnoMaquina()}, 1000);
-    }else{
-        console.log("Dale, que venís bien pá");
-        }
     }
+}
 
 
 poderElegirColor = () =>{
@@ -95,7 +87,6 @@ poderElegirColor = () =>{
             cambiarColorJugador(i)
             colorSeleccionado = i;
             agregarSecuenciaJugador();
-            console.log(colorSeleccionado)
         }
     })
 }
